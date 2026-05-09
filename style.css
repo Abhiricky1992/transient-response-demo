@@ -1,0 +1,700 @@
+.reveal {
+  background: linear-gradient(180deg, #f4f6f8, #ffffff);
+}
+
+.title-slide {
+  text-align: center;
+}
+
+.main-title {
+  font-size: 3.5em;
+  color: #2c5d8a;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.course-title {
+  font-size: 1.8em;
+  color: #9b2c91;
+  font-weight: 500;
+}
+
+.steady-pitch-slide {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.steady-pitch-slide h2 {
+  color: #245f9e;
+  font-size: 1.65em;
+  margin-bottom: 0.2em;
+}
+
+.aircraft-scene {
+  width: 78%;
+  margin: 0 auto;
+  margin-top: 30px;
+}
+
+.body-line {
+  stroke: #2c5d8a;
+  stroke-width: 5;
+}
+
+.fuselage, .wing, .tail {
+  fill: #dceaf7;
+  stroke: #245f9e;
+  stroke-width: 4;
+}
+
+.nose {
+  fill: #245f9e;
+}
+
+.force-arrow {
+  stroke: #9b2c91;
+  stroke-width: 4;
+  marker-end: url(#arrowhead);
+}
+
+.force-text {
+  font-size: 24px;
+  fill: #333;
+}
+
+.moment-arc {
+  fill: none;
+  stroke: #9b2c91;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.moment-arrowhead {
+  fill: #9b2c91;
+}
+
+
+
+.gust-wave {
+  fill: none;
+  stroke: #2c5d8a;
+  stroke-width: 5;
+  stroke-dasharray: 16 12;
+  animation: gustMove 1.2s linear infinite;
+}
+
+.delay1 {
+  animation-delay: 0.25s;
+}
+
+.delay2 {
+  animation-delay: 0.5s;
+}
+
+.gust-equation {
+  position: absolute;
+  left: 36%;
+  bottom: 13%;
+  transform: translateX(-50%);
+
+  background: rgba(255,255,255,0.95);
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-size: 0.40em;
+  color: #333;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.gust-equation p {
+  margin: 0;
+}
+
+
+
+
+
+
+/* LEFT equation box */
+.equation-panel {
+  position: absolute;
+
+  left: -8%;
+  top: 30%;
+
+  width: 22%;
+
+  background: rgba(255,255,255,0.97);
+
+  border-left: 6px solid #9b2c91;
+
+  padding: 18px 18px;
+
+  font-size: 0.46em;
+
+  box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+
+  text-align: left;
+}
+
+
+/* RIGHT equation box */
+.disturbance-panel {
+  position: absolute;
+
+  right: -8%;
+  top: 30%;
+
+  width: 22%;
+
+  background: rgba(255,255,255,0.97);
+
+  border-left: 6px solid #245f9e;
+
+  padding: 18px 18px;
+
+  font-size: 0.46em;
+
+  box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+
+  text-align: left;
+}
+
+
+/*
+.disturbance-panel {
+  top: 55%;
+  border-left-color: #245f9e;
+}*/
+
+
+
+.eq-title {
+  font-weight: 700;
+  color: #245f9e;
+  margin-bottom: 0.35em;
+}
+
+.equation-panel p,
+.disturbance-panel p {
+  overflow-wrap: break-word;
+}
+
+.equation-panel mjx-container,
+.disturbance-panel mjx-container {
+  font-size: 88% !important;
+}
+
+/* Citation fully separated */
+.citation {
+  position: absolute;
+
+  bottom: -2%;
+
+  left: 5%;
+  right: 5%;
+
+  text-align: center;
+
+  font-size: 0.28em;
+
+  color: #666;
+
+  line-height: 1.4;
+}
+
+.oscillate {
+  animation: pitchOscillation 1.5s ease-in-out infinite;
+  transform-origin: 450px 210px;
+}
+
+@keyframes pitchOscillation {
+  0%   { transform: translate(450px,210px) rotate(0deg); }
+  25%  { transform: translate(450px,210px) rotate(7deg); }
+  50%  { transform: translate(450px,210px) rotate(0deg); }
+  75%  { transform: translate(450px,210px) rotate(-5deg); }
+  100% { transform: translate(450px,210px) rotate(0deg); }
+}
+
+@keyframes gustMove {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -56; }
+}
+
+.gust-waveform {
+  position: absolute;
+  right: 7%;
+  bottom: 10%;
+
+  width: 29%;
+  height: 25%;
+
+  background: rgba(255,255,255,0.96);
+  border-left: 6px solid #245f9e;
+  padding: 10px 16px;
+  box-shadow: 0 7px 22px rgba(0,0,0,0.11);
+}
+
+.waveform-title {
+  margin: 0;
+  text-align: center;
+  font-size: 0.42em;
+  font-weight: 700;
+  color: #245f9e;
+}
+
+.gust-plot {
+  width: 100%;
+  height: 88%;
+}
+
+.axis-line {
+  stroke: #333;
+  stroke-width: 2.5;
+}
+
+.axis-label {
+  font-size: 20px;
+  fill: #333;
+}
+
+.tg-line,
+.amp-line {
+  stroke: #777;
+  stroke-width: 2;
+  stroke-dasharray: 6 6;
+}
+
+.step-gust-js {
+  fill: none;
+  stroke: #9b2c91;
+  stroke-width: 5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.model-slide {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 42px 70px 55px 70px;
+}
+
+.model-slide h2 {
+  color: #245f9e;
+  font-size: 1.05em;
+  line-height: 1.08;
+  margin: 0 0 45px 0;
+  text-align: center;
+}
+
+.model-grid {
+  display: grid;
+  grid-template-columns: 34% 56%;
+  column-gap: 6%;
+  width: 96vw !important;
+  max-width: 96vw !important;
+  margin-left: -12vw !important;
+  margin-right: auto !important;
+  align-items: start;
+}
+
+.input-column,
+.model-column {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.model-card {
+  background: rgba(255,255,255,0.97);
+  box-shadow: 0 7px 22px rgba(0,0,0,0.11);
+  text-align: center;
+  box-sizing: border-box;
+  padding: 22px 26px;
+  overflow: hidden;
+}
+
+.gust-box,
+.perturb-box {
+  min-height: 145px;
+}
+
+.pitch-box,
+.first-order-box {
+  min-height: 145px;
+}
+
+.gust-box {
+  border-left: 7px solid #245f9e;
+}
+
+.perturb-box {
+  border-left: 7px solid #9b2c91;
+}
+
+.pitch-box {
+  border-left: 7px solid #2c5d8a;
+}
+
+.first-order-box {
+  border-left: 7px solid #3f7d44;
+}
+
+.eq-title {
+  font-weight: 700;
+  color: #245f9e;
+  font-size: 0.58em;
+  line-height: 1.15;
+  margin: 0 0 16px 0;
+}
+
+.model-card p {
+  margin: 0;
+}
+
+.model-slide mjx-container {
+  white-space: nowrap !important;
+  overflow: visible !important;
+}
+
+.input-column mjx-container {
+  font-size: 62% !important;
+}
+
+.model-column mjx-container {
+  font-size: 70% !important;
+}
+
+.small-note {
+  font-size: 0.30em;
+  color: #555;
+  line-height: 1.25;
+  margin-top: 14px;
+}
+
+.model-slide .citation {
+  position: absolute;
+  bottom: 10px;
+  left: 60px;
+  right: 60px;
+  text-align: center;
+  font-size: 0.21em;
+  color: #666;
+}
+
+.fo-slide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 35px 60px 45px 60px;
+  box-sizing: border-box;
+}
+
+.fo-slide h2 {
+  text-align: center;
+  color: #245f9e;
+  font-size: 1.00em;
+  margin-bottom: 28px;
+}
+
+.fo-grid {
+  display: grid;
+  grid-template-columns: 36% 60%;
+  column-gap: 4%;
+  align-items: start;
+}
+
+.fo-left {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.fo-right {
+  display: flex;
+  justify-content: center;
+}
+
+.fo-card,
+.fo-plot-card {
+  background: rgba(255,255,255,0.97);
+  border-left: 7px solid #245f9e;
+  box-shadow: 0 7px 22px rgba(0,0,0,0.10);
+  padding: 18px 24px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.fo-card {
+  min-height: 140px;
+}
+
+.response-card {
+  min-height: 315px;
+}
+
+.fo-plot-card {
+  width: 100%;
+  min-height: 500px;
+  text-align: center;
+  position: relative;
+}
+
+.fo-slide .eq-title {
+  color: #245f9e;
+  font-weight: 700;
+  font-size: 0.50em;
+  margin-bottom: 14px;
+}
+
+.fo-slide mjx-container {
+  font-size: 58% !important;
+}
+
+.fo-plot {
+  width: 100%;
+  height: 300px;
+}
+
+.axis-line {
+  stroke: #333;
+  stroke-width: 2.5;
+}
+
+.axis-label {
+  fill: #333;
+  font-size: 18px;
+}
+
+.steady-line,
+.tau-line {
+  stroke: #777;
+  stroke-width: 2;
+  stroke-dasharray: 6 6;
+}
+
+.fo-response-line {
+  fill: none;
+  stroke: #9b2c91;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tau-control {
+  margin-top: 22px;
+  font-size: 0.34em;
+  color: #333;
+  text-align: center;
+}
+
+.tau-control input {
+  width: 78%;
+  margin-top: 8px;
+}
+
+.tau-control mjx-container,
+.tau-note mjx-container {
+  font-size: 100% !important;
+}
+
+.tau-marker-label {
+  position: absolute;
+  left: 155px;
+  top: 300px;
+
+  font-family: "Times New Roman", serif;
+  font-size: 34px;
+  color: #333;
+}
+
+.tau-percent-label {
+  position: absolute;
+  left: 18px;
+  top: 210px;
+
+  font-size: 0.30em;
+  color: #333;
+  background: rgba(255,255,255,0.88);
+  padding: 2px 4px;
+}
+
+.tau-note {
+  margin-top: 12px;
+  font-size: 0.32em;
+  color: #555;
+  text-align: center;
+}
+
+.tau-text {
+  font-size: 1em;
+  font-family: inherit;
+  font-style: normal;
+}
+
+.fo-slide .citation {
+  position: absolute;
+  left: 60px;
+  right: 60px;
+  bottom: 6px;
+  text-align: center;
+  font-size: 0.17em;
+  color: #666;
+}
+
+.metrics-slide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 34px 55px 48px 55px;
+  box-sizing: border-box;
+  overflow: visible;
+  
+}
+
+.metrics-slide h2 {
+  color: #245f9e;
+  font-size: 1.00em;
+  text-align: center;
+  margin: 0 0 28px 0;
+}
+
+.perf-grid {
+  display: grid;
+  grid-template-columns: 43% 53%;
+  column-gap: 4%;
+  align-items: start;
+}
+
+/* LEFT PLOT PANEL */
+
+.plot-card {
+  background: rgba(255,255,255,0.97);
+  border-left: 7px solid #245f9e;
+  box-shadow: 0 7px 22px rgba(0,0,0,0.10);
+  padding: 18px 22px;
+  text-align: center;
+  min-height: 445px;
+  box-sizing: border-box;
+}
+
+.metrics-plot {
+  width: 128%;
+  height: 500px;
+  margin-left: -14%;
+  margin-top: -100px;
+  display: block;
+}
+
+.metrics-slide .eq-title {
+  color: #245f9e;
+  font-weight: 700;
+  font-size: 0.46em;
+
+  margin-bottom: -55px;
+}
+
+/* SVG */
+
+.axis-line {
+  stroke: #333;
+  stroke-width: 2.5;
+}
+
+.axis-label,
+.metric-label {
+  fill: #333;
+  font-size: 18px;
+}
+
+.steady-line,
+.tau-line {
+  stroke: #777;
+  stroke-width: 2.3;
+  stroke-dasharray: 6 6;
+}
+
+.rise-line,
+.rise-marker {
+  stroke: #d97706;
+  stroke-width: 2.4;
+  stroke-dasharray: 6 6;
+}
+
+.settling-line,
+.settling-marker {
+  stroke: #3f7d44;
+  stroke-width: 2.4;
+  stroke-dasharray: 6 6;
+}
+
+.metrics-response-line {
+  fill: none;
+  stroke: #9b2c91;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* RIGHT PANELS */
+
+.metrics-column {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.metric-row {
+  display: grid;
+  grid-template-columns: 48% 48%;
+  column-gap: 4%;
+}
+
+.metric-card {
+  background: rgba(255,255,255,0.97);
+  border-left: 7px solid #3f7d44;
+  box-shadow: 0 7px 22px rgba(0,0,0,0.10);
+  padding: 18px 22px;
+  text-align: center;
+  min-height: 210px;
+  box-sizing: border-box;
+}
+
+.half-card {
+  min-height: 245px;
+}
+
+.metric-title {
+  color: #245f9e;
+  font-weight: 700;
+  font-size: 0.45em;
+  margin: 0 0 12px 0;
+}
+
+.metric-note {
+  font-size: 0.28em;
+  color: #555;
+  margin-top: 10px;
+  line-height: 1.25;
+}
+
+.metrics-slide mjx-container {
+  font-size: 58% !important;
+}
+
+/* Citation */
+
+.metrics-slide .citation {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16px;
+  text-align: center;
+  font-size: 0.23em;
+  color: #666;
+}
+
+
+

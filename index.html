@@ -1,0 +1,416 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Transient Response Analysis</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/white.css">
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- Slide 1 -->
+      <section class="title-slide">
+        <h1 class="main-title">Transient Response Analysis</h1>
+        <h3 class="course-title">Introduction to Flight Vehicle Controls</h3>
+      </section>
+
+      <!-- Slide 2 -->
+      <section class="steady-pitch-slide">
+        <h2>Aircraft in Steady Pitch</h2>
+
+        <div class="aircraft-scene">
+          <svg id="pitchAircraft" viewBox="0 0 900 420">
+
+            <defs>
+				<marker id="arrowhead" markerWidth="10" markerHeight="7"
+				refX="9" refY="3.5" orient="auto">
+				<polygon points="0 0, 10 3.5, 0 7" fill="#9b2c91" />
+				</marker>
+                <polygon points="0 0, 10 3.5, 0 7" fill="#9b2c91" />
+              </marker>
+            </defs>
+
+            <g class="gust-fragment fragment" data-fragment-index="2">
+              <path class="gust-wave" d="M70 120 C130 80, 190 160, 250 120" />
+              <path class="gust-wave delay1" d="M50 190 C120 150, 190 230, 260 190" />
+              <path class="gust-wave delay2" d="M70 260 C130 220, 190 300, 250 260" />
+            </g>
+
+            <g id="aircraftBody" transform="translate(450,210) scale(1.15)">
+              <line x1="-220" y1="0" x2="230" y2="0" class="body-line"/>
+              <polygon points="-40,-18 90,-18 185,0 90,18 -40,18" class="fuselage"/>
+              <polygon points="-20,-18 -120,-95 35,-18" class="wing"/>
+              <polygon points="-20,18 -120,95 35,18" class="wing"/>
+              <polygon points="-190,0 -240,-55 -205,0 -240,55" class="tail"/>
+              <circle cx="190" cy="0" r="8" class="nose"/>
+            </g>
+
+            <g class="fbd-fragment fragment" data-fragment-index="1">
+              <line x1="450" y1="210" x2="450" y2="85" class="force-arrow"/>
+              <text x="465" y="95" class="force-text">Lift (L)</text>
+
+              <line x1="450" y1="210" x2="450" y2="335" class="force-arrow"/>
+              <text x="465" y="330" class="force-text">Weight (W)</text>
+
+              <line x1="450" y1="210" x2="650" y2="210" class="force-arrow"/>
+              <text x="655" y="180" class="force-text">Thrust (T)</text>
+
+              <line x1="450" y1="210" x2="250" y2="210" class="force-arrow"/>
+              <text x="250" y="195" class="force-text">Drag (D)</text>
+
+              <path d="M525 130 A90 90 0 0 1 585 240" class="moment-arc"/>
+			  <polygon points="577,234 603,239 584,259" class="moment-arrowhead"/>
+              <text x="585" y="135" class="force-text">Pitching moment (M<tspan dy="8" font-size="16">y</tspan><tspan dy="-8">)</tspan></text>
+            </g>
+          </svg>
+        </div>
+		
+		<div class="gust-equation fragment" data-fragment-index="2">
+		<p>
+		Gust input:
+		\[
+		w_g(t)=A_g\,H(t-t_g)
+		\]
+		</p>
+		</div>
+		
+		<div class="gust-waveform fragment" data-fragment-index="2">
+		<p class="waveform-title">Gust signal</p>
+
+		<svg viewBox="0 0 420 210" class="gust-plot">
+		<line x1="55" y1="165" x2="375" y2="165" class="axis-line" />
+		<line x1="55" y1="165" x2="55" y2="35" class="axis-line" />
+
+		<text x="382" y="172" class="axis-label">t</text>
+		<text x="25" y="38" class="axis-label">w<tspan dy="6" font-size="14">g</text>
+
+		<line x1="150" y1="165" x2="150" y2="75" class="tg-line" />
+		<text x="137" y="190" class="axis-label">t<tspan dy="6" font-size="14">g</text>
+
+		<line x1="345" y1="165" x2="345" y2="75" class="amp-line" />
+		<text x="355" y="125" class="axis-label">A<tspan dy="6" font-size="14">g</text>
+
+		<polyline id="gustStepLine"
+		points=""
+		class="step-gust-js"
+		/>
+	</svg>
+	</div>
+
+        <div class="equation-panel fragment" data-fragment-index="1">
+          <p class="eq-title">Trimmed flight: Forces and Moments are balanced</p>
+          <p>\[
+			\begin{aligned}
+			L &\approx W \\
+			T &\approx D \\
+			M_y &=M_{aero}+M_{control} \approx 0
+			\end{aligned}
+			\]</p>
+        </div>
+
+        <div class="disturbance-panel fragment" data-fragment-index="2">
+          <p class="eq-title">After a gust: Equilibrium is disturbed</p>
+          <p>\[
+			\theta(t)=\theta_0+\Delta\theta(t)
+			\]</p>
+
+		  <p>\[
+			M_y=M_{y0}+\Delta M_y
+		  \]</p>
+		  
+        </div>
+
+        <p class="citation">
+          Aircraft force/moment balance and perturbation equations adapted from:
+          Stevens & Lewis, <em>Aircraft Control and Simulation</em>, Wiley, 3rd Ed.;
+          ERAU Open Textbook: <em>Introduction to Aerospace Flight Vehicles</em>.
+        </p>
+	</section>
+	  
+	  <section class="model-slide">
+
+		<h2>From Disturbance to Dynamic Modeling</h2>
+
+      <div class="model-grid">
+
+		<!-- LEFT COLUMN -->
+		<div class="input-column">
+		
+		
+
+		<div class="model-card gust-box fragment" data-fragment-index="0">
+        <p class="eq-title">Gust input</p>
+        <div class="equation-row">
+		\[
+		w_g(t)=A_gH(t-t_g)
+		\]
+		</div>
+      </div>
+
+      <div class="model-card perturb-box fragment" data-fragment-index="0">
+        <p class="eq-title">Perturbation variable</p>
+		<div class="equation-row">
+		\[
+		\theta(t)=\theta_0+\Delta\theta(t)
+		\]
+	</div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="model-column">
+
+      <div class="model-card pitch-box fragment" data-fragment-index="1">
+        <p class="eq-title">Simplified pitch dynamics (Second Order)</p>
+        <div class="equation-row wide-equation">
+		\[
+		I_y\Delta\ddot{\theta}+c\Delta\dot{\theta}+k\Delta\theta=w_g(t)
+		\]
+		 <p class="small-note">
+          One can describe the oscillatory behaviour of the aircraft using a second order model
+        </p>
+		</div>
+      </div>
+
+      <div class="model-card first-order-box fragment" data-fragment-index="1">
+        <p class="eq-title">First-order approximation</p>
+        <p>
+        \[
+        \tau\Delta\dot{\theta}(t)+\Delta\theta(t)=w_g(t)
+        \]
+        </p>
+
+        <p class="small-note">
+        Before studying the full oscillatory behavior, one can also approximate the dominant pitch response by a simple first order model.
+        </p>
+      </div>
+
+	</div>
+
+	</div>
+
+	<p class="citation">
+    Adapted from standard linearized aircraft pitch dynamics:
+    Stevens & Lewis, <em>Aircraft Control and Simulation</em>;
+    Ogata, <em>Modern Control Engineering</em>.
+	</p>
+
+	</section>
+	
+<section class="fo-slide">
+
+  <h2>FIRST-ORDER MODEL: STEP RESPONSE</h2>
+
+  <div class="fo-grid">
+
+    <div class="fo-left">
+
+      <div class="fo-card fragment" data-fragment-index="0">
+        <p class="eq-title">First-order approximation</p>
+        \[
+        \tau \Delta\dot{\theta}(t)+\Delta\theta(t)=w_g(t)
+        \]
+      </div>
+
+      <div class="fo-card response-card fragment" data-fragment-index="1">
+        <p class="eq-title">Response</p>
+
+        \[
+        \tau \Delta\dot{\theta}(t)+\Delta\theta(t)=A_g
+        \]
+
+        \[
+        t_g=0,\qquad \Delta\theta(0)=0
+        \]
+
+        \[
+        \Delta\theta(t)=A_g\left(1-e^{-t/\tau}\right)
+        \]
+      </div>
+
+    </div>
+
+    <div class="fo-right">
+
+      <div class="fo-plot-card fragment" data-fragment-index="2">
+
+        <p class="eq-title">Transient response</p>
+
+        <svg viewBox="0 0 520 300" class="fo-plot">
+          <line x1="70" y1="245" x2="470" y2="245" class="axis-line"/>
+          <line x1="70" y1="245" x2="70" y2="45" class="axis-line"/>
+
+          <text x="478" y="252" class="axis-label">t</text>
+          <text x="25" y="55" class="axis-label">Δθ</text>
+
+          <line x1="70" y1="80" x2="470" y2="80" class="steady-line"/>
+          <text x="478" y="86" class="axis-label">A<tspan dy="5" font-size="14">g</tspan></text>
+
+          <line id="tauVertical" x1="150" y1="245" x2="150" y2="141" class="tau-line"/>
+          <line id="tauHorizontal" x1="70" y1="141" x2="150" y2="141" class="tau-line"/>
+
+          <polyline id="firstOrderCurve" points="" class="fo-response-line"/>
+        </svg>
+		<div id="tauMarkerLabel" class="tau-marker-label">\( \tau \)</div>
+        <div class="tau-percent-label">0.632A<sub>g</sub></div>
+	<div class="tau-control">
+  <label for="tauSlider">
+    Time constant \( \tau \): <span id="tauValue">1.0</span> s
+  </label>
+
+  <input
+    id="tauSlider"
+    type="range"
+    min="0.4"
+    max="3.0"
+    step="0.1"
+    value="1.0"
+  />
+</div>
+
+<div class="tau-note">
+  Larger \( \tau \) means a slower response; smaller \( \tau \) means a faster response.
+</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <p class="citation">
+    First-order step response adapted from:
+    Ogata, <em>Modern Control Engineering</em>;
+    Nise, <em>Control Systems Engineering</em>.
+  </p>
+
+</section>
+
+<section class="metrics-slide">
+
+  <h2>FIRST-ORDER SYSTEMS: PERFORMANCE MEASURES</h2>
+
+  <div class="perf-grid">
+
+    <!-- LEFT: Large plot panel -->
+    <div class="plot-card fragment" data-fragment-index="0">
+
+      <p class="eq-title">First-order step response</p>
+
+      <svg viewBox="0 0 620 420" class="metrics-plot">
+
+        <!-- axes -->
+        <line x1="75" y1="340" x2="560" y2="340" class="axis-line"/>
+        <line x1="75" y1="340" x2="75" y2="70" class="axis-line"/>
+
+        <text x="565" y="348" class="axis-label">t</text>
+        <text x="38" y="75" class="axis-label">Δθ</text>
+
+        <!-- final value -->
+        <line x1="75" y1="95" x2="560" y2="95" class="steady-line"/>
+        <text x="565" y="100" class="axis-label">
+          A<tspan dy="5" font-size="14">g</tspan>
+        </text>
+
+        <!-- tau marker -->
+        <line x1="172" y1="340" x2="172" y2="190" class="tau-line fragment" data-fragment-index="1"/>
+        <!--<text x="160" y="370" class="metric-label fragment" data-fragment-index="1">τ</text>-->
+        <text x="185" y="198" class="metric-label fragment" data-fragment-index="1">63.2%</text>
+
+        <!-- rise time -->
+        <line x1="75" y1="315" x2="560" y2="315" class="rise-line fragment" data-fragment-index="2"/>
+        <line x1="75" y1="119" x2="560" y2="119" class="rise-line fragment" data-fragment-index="2"/>
+
+        <line x1="86" y1="340" x2="86" y2="315" class="rise-marker fragment" data-fragment-index="2"/>
+        <line x1="298" y1="340" x2="298" y2="119" class="rise-marker fragment" data-fragment-index="2"/>
+
+        <text x="93" y="310" class="metric-label fragment" data-fragment-index="2">10%</text>
+        <text x="308" y="135" class="metric-label fragment" data-fragment-index="2">90%</text>
+        <!--<text x="145" y="392" class="metric-label fragment" data-fragment-index="2">rise time ≈ 2.2τ</text>-->
+
+        <!-- settling band -->
+        <line x1="75" y1="100" x2="560" y2="100" class="settling-line fragment" data-fragment-index="3"/>
+        <line x1="75" y1="119" x2="560" y2="119" class="settling-line fragment" data-fragment-index="3"/>
+
+        <line x1="463" y1="340" x2="463" y2="95" class="settling-marker fragment" data-fragment-index="3"/>
+
+        <text x="470" y="140" class="metric-label fragment" data-fragment-index="3">±2% band</text>
+        <!--<text x="390" y="392" class="metric-label fragment" data-fragment-index="3">settling time ≈ 4τ</text>-->
+
+        <!-- animated response curve -->
+        <polyline id="metricsCurve" points="" class="metrics-response-line"/>
+
+      </svg>
+
+    </div>
+
+    <!-- RIGHT: Formula panels -->
+    <div class="metrics-column">
+
+      <div class="metric-card fragment" data-fragment-index="1">
+        <p class="metric-title">Time constant</p>
+
+        \[
+        \Delta\theta(\tau)=0.632A_g
+        \]
+
+        <p class="metric-note">
+          Smaller \( \tau \): faster response.
+        </p>
+      </div>
+
+      <div class="metric-row">
+
+        <div class="metric-card half-card fragment" data-fragment-index="2">
+          <p class="metric-title">Rise time</p>
+
+          \[
+          t_r \approx 2.2\tau
+          \]
+
+          <p class="metric-note">
+            Time to rise from 10% to 90% of final value.
+          </p>
+        </div>
+
+        <div class="metric-card half-card fragment" data-fragment-index="3">
+          <p class="metric-title">Settling time</p>
+
+          \[
+          t_s \approx 4\tau
+          \]
+
+          <p class="metric-note">
+            Time to remain within the ±2% band.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <p class="citation">
+    First-order transient response measures adapted from:
+    Ogata, <em>Modern Control Engineering</em>;
+    Nise, <em>Control Systems Engineering</em>.
+  </p>
+
+</section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
