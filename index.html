@@ -455,6 +455,67 @@
 
 </section>
 
+<section class="so-slide">
+
+  <h2>SECOND-ORDER PITCH RESPONSE MODEL</h2>
+
+  <div class="so-grid">
+
+    <div class="so-card fragment" data-fragment-index="0">
+      <p class="eq-title">Pitch disturbance model</p>
+      \[
+      I_y\Delta\ddot{\theta}
+      +c\Delta\dot{\theta}
+      +k\Delta\theta
+      =
+      w_g(t)
+      \]
+    </div>
+
+    <div class="so-card fragment" data-fragment-index="1">
+      <p class="eq-title">Transfer function</p>
+      \[
+      \frac{\Delta\Theta(s)}{W_g(s)}
+      =
+      \frac{1}{I_y s^2+cs+k}
+      \]
+    </div>
+
+    <div class="so-card fragment" data-fragment-index="2">
+      <p class="eq-title">Normalized transfer function</p>
+      \[
+      \frac{\Delta\Theta(s)}{W_g(s)}
+      =
+      \frac{1/I_y}
+      {s^2+2\zeta\omega_n s+\omega_n^2}
+      \]
+    </div>
+
+    <div class="so-card fragment" data-fragment-index="3">
+      <p class="eq-title">Key parameters</p>
+
+      \[
+      \omega_n=\sqrt{\frac{k}{I_y}},
+      \qquad
+      \zeta=\frac{c}{2\sqrt{kI_y}}
+      \]
+
+<p class="so-note">
+  <span class="so-symbol">&omega;<sub>n</sub></span>: Natural frequency of response.
+  <br>
+  <span class="so-symbol">&zeta;</span>: Damping ratio.
+</p>
+    </div>
+
+  </div>
+
+  <p class="citation">
+    Adapted from Stevens & Lewis, <em>Aircraft Control and Simulation</em>;
+    Ogata, <em>Modern Control Engineering</em>.
+  </p>
+
+</section>
+
     </div>
   </div>
 
