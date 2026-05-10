@@ -205,12 +205,13 @@
 
 	</section>
 	
-<section class="fo-slide">
+	<section class="fo-slide">
 
   <h2>FIRST-ORDER MODEL: STEP RESPONSE</h2>
 
-  <div class="fo-grid">
+  <div class="fo-grid-three">
 
+    <!-- LEFT COLUMN -->
     <div class="fo-left">
 
       <div class="fo-card fragment" data-fragment-index="0">
@@ -220,66 +221,113 @@
         \]
       </div>
 
-      <div class="fo-card response-card fragment" data-fragment-index="1">
-        <p class="eq-title">Response</p>
+      <div class="fo-card tf-card fragment" data-fragment-index="1">
+        <p class="eq-title">Transfer function representation</p>
+
+        <p class="small-note">
+          Taking Laplace transform with zero initial conditions:
+        </p>
 
         \[
-        \tau \Delta\dot{\theta}(t)+\Delta\theta(t)=A_g
-        \]
-
-        \[
-        t_g=0,\qquad \Delta\theta(0)=0
-        \]
-
-        \[
-        \Delta\theta(t)=A_g\left(1-e^{-t/\tau}\right)
+        \frac{\Delta\Theta(s)}{W_g(s)}
+        =
+        \frac{1}{\tau s+1}
         \]
       </div>
 
     </div>
 
-    <div class="fo-right">
+    <!-- CENTER PLOT -->
+    <div class="fo-center">
 
-      <div class="fo-plot-card fragment" data-fragment-index="2">
+      <div class="fo-plot-card fragment" data-fragment-index="3">
 
         <p class="eq-title">Transient response</p>
 
         <svg viewBox="0 0 520 300" class="fo-plot">
+
           <line x1="70" y1="245" x2="470" y2="245" class="axis-line"/>
           <line x1="70" y1="245" x2="70" y2="45" class="axis-line"/>
 
           <text x="478" y="252" class="axis-label">t</text>
-          <text x="25" y="55" class="axis-label">Δθ</text>
+          <text x="35" y="80" class="axis-label">Δθ</text>
 
           <line x1="70" y1="80" x2="470" y2="80" class="steady-line"/>
-          <text x="478" y="86" class="axis-label">A<tspan dy="5" font-size="14">g</tspan></text>
 
-          <line id="tauVertical" x1="150" y1="245" x2="150" y2="141" class="tau-line"/>
-          <line id="tauHorizontal" x1="70" y1="141" x2="150" y2="141" class="tau-line"/>
+          <text x="478" y="86" class="axis-label">
+            A<tspan dy="5" font-size="14">g</tspan>
+          </text>
 
-          <polyline id="firstOrderCurve" points="" class="fo-response-line"/>
+          <line id="tauVertical"
+                x1="150" y1="245"
+                x2="150" y2="141"
+                class="tau-line"/>
+
+          <line id="tauHorizontal"
+                x1="70" y1="141"
+                x2="150" y2="141"
+                class="tau-line"/>
+
+          <polyline id="firstOrderCurve"
+                    points=""
+                    class="fo-response-line"/>
+
         </svg>
-		<div id="tauMarkerLabel" class="tau-marker-label">\( \tau \)</div>
-        <div class="tau-percent-label">0.632A<sub>g</sub></div>
-	<div class="tau-control">
-  <label for="tauSlider">
-    Time constant \( \tau \): <span id="tauValue">1.0</span> s
-  </label>
 
-  <input
-    id="tauSlider"
-    type="range"
-    min="0.4"
-    max="3.0"
-    step="0.1"
-    value="1.0"
-  />
-</div>
+        <div id="tauMarkerLabel" class="tau-marker-label">
+          \( \tau \)
+        </div>
 
-<div class="tau-note">
-  Larger \( \tau \) means a slower response; smaller \( \tau \) means a faster response.
-</div>
+        <div class="tau-percent-label">
+          0.632A<sub>g</sub>
+        </div>
 
+        <div class="tau-control">
+          <label for="tauSlider">
+            Time constant \( \tau \):
+            <span id="tauValue">1.0</span> s
+          </label>
+
+          <input
+            id="tauSlider"
+            type="range"
+            min="0.4"
+            max="3.0"
+            step="0.1"
+            value="1.0"
+          />
+        </div>
+
+        <div class="tau-note">
+          Larger \( \tau \) means a slower response;
+          smaller \( \tau \) means a faster response.
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="fo-right">
+
+      <div class="fo-card response-card fragment" data-fragment-index="2">
+        <p class="eq-title">Step response</p>
+
+        \[
+        W_g(s)=\frac{A_g}{s}
+        \]
+
+        <div class="eq-gap"></div>
+
+        \[
+        \Delta\theta(t)
+        =
+        A_g\left(1-e^{-t/\tau}\right)
+        \]
+
+        <p class="small-note">
+          Response to an idealized step gust.
+        </p>
       </div>
 
     </div>

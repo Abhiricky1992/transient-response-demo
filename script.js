@@ -107,9 +107,28 @@ function updateFirstOrderPlot(tau, animate = false) {
   tauHorizontal.setAttribute("y1", yTau);
   tauHorizontal.setAttribute("y2", yTau);
 
-  if (tauMarker) {
-    tauMarker.style.left = `${xTau - 6}px`;
-  }
+ if (tauMarker) {
+  const svg = document.querySelector(".fo-plot");
+  const card = document.querySelector(".fo-plot-card");
+
+  const svgRect = svg.getBoundingClientRect();
+  const cardRect = card.getBoundingClientRect();
+
+  const viewBox = svg.viewBox.baseVal;
+
+  const xPixel =
+    svgRect.left -
+    cardRect.left +
+    ((xTau - viewBox.x) / viewBox.width) * svgRect.width;
+
+  const yPixel =
+    svgRect.top -
+    cardRect.top +
+    ((y0 - viewBox.y) / viewBox.height) * svgRect.height;
+
+  tauMarker.style.left = `${xPixel+15}px`;
+  tauMarker.style.top = `${yPixel + 20}px`;
+}
 
   function makePoint(i) {
     const t = (tMax * i) / n;
@@ -157,12 +176,15 @@ function initializeFirstOrderSlider() {
   const slider = document.getElementById("tauSlider");
   if (!slider) return;
 
-  const tau = parseFloat(slider.value);
-  updateFirstOrderPlot(tau, true);
+  updateFirstOrderPlot(parseFloat(slider.value), true);
 
   slider.oninput = function () {
     updateFirstOrderPlot(parseFloat(this.value), false);
   };
+
+  if (window.MathJax) {
+    MathJax.typesetPromise();
+  }
 }
 
 Reveal.on("fragmentshown", event => {
@@ -172,11 +194,13 @@ Reveal.on("fragmentshown", event => {
 });
 
 Reveal.on("slidechanged", event => {
-  if (event.currentSlide && event.currentSlide.classList.contains("fo-slide")) {
+  if (
+    event.currentSlide &&
+    event.currentSlide.classList.contains("fo-slide")
+  ) {
     setTimeout(initializeFirstOrderSlider, 200);
   }
 });
-
 
 let metricsAnimationId = null;
 
