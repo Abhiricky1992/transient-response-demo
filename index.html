@@ -207,7 +207,7 @@
 	
 	<section class="fo-slide">
 
-  <h2>FIRST-ORDER MODEL: STEP RESPONSE</h2>
+  <h2>FIRST-ORDER MODEL</h2>
 
   <div class="fo-grid-three">
 
@@ -457,7 +457,7 @@
 
 <section class="so-slide">
 
-  <h2>SECOND-ORDER PITCH RESPONSE MODEL</h2>
+  <h2>SECOND-ORDER MODEL</h2>
 
   <div class="so-grid">
 
@@ -514,6 +514,55 @@
     Ogata, <em>Modern Control Engineering</em>.
   </p>
 
+</section>
+
+	<section class="so-response-slide">
+  <h2>SECOND-ORDER STEP RESPONSE TYPES</h2>
+
+  <div class="response-tree">
+    <div class="tree-root">Step response</div>
+
+    <div class="tree-branches">
+      <button class="response-node" onclick="showSOResponse('over')">Overdamped<br><span>ζ &gt; 1</span></button>
+      <button class="response-node" onclick="showSOResponse('critical')">Critically damped<br><span>ζ = 1</span></button>
+      <button class="response-node" onclick="showSOResponse('under')">Underdamped<br><span>0 &lt; ζ &lt; 1</span></button>
+    </div>
+  </div>
+
+  <div id="soResponsePanel" class="so-response-panel hidden">
+	
+	<button class="back-button" onclick="closeSOResponse()">← Back</button>
+
+  <p id="soPanelTitle" class="eq-title">Response</p>
+
+  <div id="soSolutionText" class="so-solution-text"></div>
+
+    <svg viewBox="0 0 560 310" class="so-response-plot">
+      <line x1="70" y1="255" x2="510" y2="255" class="axis-line"/>
+      <line x1="70" y1="255" x2="70" y2="45" class="axis-line"/>
+
+      <text x="518" y="262" class="axis-label">t</text>
+      <text x="28" y="55" class="axis-label">y(t)</text>
+
+      <line x1="70" y1="95" x2="510" y2="95" class="steady-line"/>
+      <text x="518" y="100" class="axis-label">1</text>
+
+      <polyline id="soResponseCurve" points="" class="so-response-line"/>
+    </svg>
+
+    <div class="so-controls">
+      <label>ζ: <span id="zetaValue">0.5</span></label>
+      <input id="zetaSlider" type="range" min="0.1" max="2.0" step="0.05" value="0.5">
+
+      <label>ω<sub>n</sub>: <span id="omegaValue">1.0</span> rad/s</label>
+      <input id="omegaSlider" type="range" min="0.5" max="3.0" step="0.1" value="1.0">
+    </div>
+  </div>
+
+  <p class="citation">
+    Second-order step response types adapted from: Ogata, <em>Modern Control Engineering</em>;
+    Nise, <em>Control Systems Engineering</em>.
+  </p>
 </section>
 
     </div>

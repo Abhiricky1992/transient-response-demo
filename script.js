@@ -257,4 +257,162 @@ Reveal.on("slidechanged", event => {
   }
 });
 
+let currentSOType = "under";
 
+function secondOrderStep(t, zeta, omega) {
+  if (zeta < 1) {
+    const wd = omega * Math.sqrt(1 - zeta * zeta);
+    return 1 - Math.exp(-zeta * omega * t) *
+      (Math.cos(wd * t) + (zeta / Math.sqrt(1 - zeta * zeta)) * Math.sin(wd * t));
+  }
+
+  if (Math.abs(zeta - 1) < 1e-6) {
+    return 1 - Math.exp(-omega * t) * (1 + omega * t);
+  }
+
+  const a = Math.sqrt(zeta * zeta - 1);
+  const r1 = -omega * (zeta - a);
+  const r2 = -omega * (zeta + a);
+
+  return 1 + (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r1 - r2);
+}
+
+function setZetaRange(type) {
+  const zetaSlider = document.getElementById("zetaSlider");
+
+  if (type === "over") {
+    zetaSlider.min = "1.05";
+    zetaSlider.max = "2.5";
+    zetaSlider.step = "0.05";
+    zetaSlider.value = "1.5";
+    zetaSlider.disabled = false;
+  }
+
+  if (type === "critical") {
+    zetaSlider.min = "1";
+    zetaSlider.max = "1";
+    zetaSlider.step = "1";
+    zetaSlider.value = "1";
+    zetaSlider.disabled = true;
+  }
+
+  if (type === "under") {
+    zetaSlider.min = "0.05";
+    zetaSlider.max = "0.95";
+    zetaSlider.step = "0.05";
+    zetaSlider.value = "0.45";
+    zetaSlider.disabled = false;
+  }
+}
+
+function updateSolutionText(type) {
+  const solution = document.getElementById("soSolutionText");
+
+  if (!solution) return;
+
+  if (type === "over") {
+    solution.innerHTML = `
+      \\[
+      y(t)=1+C_1e^{s_1t}+C_2e^{s_2t},\\qquad \\zeta>1
+      \\]
+      <div class="solution-note">
+        where
+        \\[
+        s_{1,2}=-\\omega_n\\left(\\zeta \\mp \\sqrt{\\zeta^2-1}\\right)
+        \\]
+        are two real negative roots.
+      </div>
+    `;
+  }
+
+  if (type === "critical") {
+    solution.innerHTML = `
+      \\[
+      y(t)=1-e^{-\\omega_n t}(1+\\omega_n t),\\qquad \\zeta=1
+      \\]
+    `;
+  }
+
+  if (type === "under") {
+    solution.innerHTML = `
+      \\[
+      y(t)=1-e^{-\\zeta\\omega_n t}
+      \\left[
+      \\cos(\\omega_d t)+
+      \\frac{\\zeta}{\\sqrt{1-\\zeta^2}}\\sin(\\omega_d t)
+      \\right],
+      \\quad 0<\\zeta<1
+      \\]
+      <div class="solution-note">
+        where
+        \\[
+        \\omega_d=\\omega_n\\sqrt{1-\\zeta^2}
+        \\]
+        is the damped natural frequency.
+      </div>
+    `;
+  }
+
+  if (window.MathJax) {
+    MathJax.typesetPromise([solution]);
+  }
+}
+
+function drawSOResponse() {
+  const curve = document.getElementById("soResponseCurve");
+  const zetaSlider = document.getElementById("zetaSlider");
+  const omegaSlider = document.getElementById("omegaSlider");
+
+  if (!curve || !zetaSlider || !omegaSlider) return;
+
+  const zeta = parseFloat(zetaSlider.value);
+  const omega = parseFloat(omegaSlider.value);
+
+  document.getElementById("zetaValue").textContent = zeta.toFixed(2);
+  document.getElementById("omegaValue").textContent = omega.toFixed(1);
+
+  const x0 = 70, y0 = 255;
+  const width = 440, height = 160;
+  const tMax = 10, n = 260;
+
+  const points = [];
+
+  for (let i = 0; i <= n; i++) {
+    const t = (tMax * i) / n;
+    const yVal = secondOrderStep(t, zeta, omega);
+
+    const x = x0 + (t / tMax) * width;
+    const y = y0 - yVal * height;
+
+    points.push(`${x},${y}`);
+  }
+
+  curve.setAttribute("points", points.join(" "));
+}
+
+function showSOResponse(type) {
+  currentSOType = type;
+
+  const panel = document.getElementById("soResponsePanel");
+  const title = document.getElementById("soPanelTitle");
+
+  panel.classList.remove("hidden");
+
+  if (type === "over") title.textContent = "Overdamped response";
+  if (type === "critical") title.textContent = "Critically damped response";
+  if (type === "under") title.textContent = "Underdamped response";
+
+  setZetaRange(type);
+  updateSolutionText(type);
+  drawSOResponse();
+}
+
+function closeSOResponse() {
+  document.getElementById("soResponsePanel").classList.add("hidden");
+}
+
+document.addEventListener("input", event => {
+  if (event.target.id === "zetaSlider" || event.target.id === "omegaSlider") {
+    drawSOResponse();
+  }
+});
