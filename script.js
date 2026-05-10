@@ -416,3 +416,6 @@ document.addEventListener("input", event => {
     drawSOResponse();
   }
 });
+
+window.showSOResponse = showSOResponse;
+window.closeSOResponse = closeSOResponse;
