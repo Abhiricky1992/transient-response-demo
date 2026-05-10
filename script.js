@@ -419,3 +419,233 @@ document.addEventListener("input", event => {
 
 window.showSOResponse = showSOResponse;
 window.closeSOResponse = closeSOResponse;
+
+let udAnimationId = null;
+
+function animateUnderdampedCurve() {
+  const curve = document.getElementById("udResponseCurve");
+  if (!curve) return;
+
+  if (udAnimationId) {
+    cancelAnimationFrame(udAnimationId);
+  }
+
+  /*
+    Chosen values for teaching plot:
+    zeta < 1 gives underdamped response.
+  */
+  const zeta = 0.35;
+  const omegaN = 1.6;
+  const omegaD = omegaN * Math.sqrt(1 - zeta * zeta);
+
+  const x0 = 80;
+  const y0 = 310;
+  const width = 565;
+  const height = 135;
+  const tMax = 8.0;
+  const n = 700;
+
+  const yInf = 1.0;
+  const yInfCoord = y0 - yInf * height;
+
+  function ySecondOrder(t) {
+    return 1 - Math.exp(-zeta * omegaN * t) *
+      (
+        Math.cos(omegaD * t) +
+        (zeta / Math.sqrt(1 - zeta * zeta)) *
+        Math.sin(omegaD * t)
+      );
+  }
+
+  function xFromTime(t) {
+    return x0 + (t / tMax) * width;
+  }
+
+  function yFromValue(yVal) {
+    return y0 - yVal * height;
+  }
+
+  function setLine(id, x1, y1, x2, y2) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.setAttribute("x1", x1);
+    el.setAttribute("y1", y1);
+    el.setAttribute("x2", x2);
+    el.setAttribute("y2", y2);
+  }
+
+  function setText(id, x, y) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.setAttribute("x", x);
+    el.setAttribute("y", y);
+  }
+
+  /*
+    Sample the actual curve first.
+  */
+  const samples = [];
+  for (let i = 0; i <= n; i++) {
+    const t = (tMax * i) / n;
+    const y = ySecondOrder(t);
+    samples.push({ t, y });
+  }
+
+  /*
+    Delay time: first time y(t) reaches 50% final value.
+  */
+  const delaySample =
+    samples.find(p => p.y >= 0.5 * yInf) || samples[0];
+
+  /*
+    Rise time for underdamped response:
+    first time y(t) reaches final value.
+  */
+  const riseSample =
+    samples.find(p => p.y >= yInf) || samples[0];
+
+  /*
+    Peak time:
+    location of first maximum. For the standard underdamped unit-step response,
+    t_p = pi / omega_d.
+  */
+  const tPeak = Math.PI / omegaD;
+  const yPeak = ySecondOrder(tPeak);
+  const peakSample = { t: tPeak, y: yPeak };
+
+  /*
+    Settling time:
+    first time after which response stays within ±2%.
+  */
+  let settlingSample = samples[samples.length - 1];
+  for (let i = 0; i < samples.length; i++) {
+    const rest = samples.slice(i);
+    const staysSettled = rest.every(p =>
+      Math.abs(p.y - yInf) <= 0.02 * yInf
+    );
+
+    if (staysSettled) {
+      settlingSample = samples[i];
+      break;
+    }
+  }
+
+  /*
+    Convert times/levels to SVG coordinates.
+  */
+  const xDelay = xFromTime(delaySample.t);
+  const yDelay = yFromValue(0.5 * yInf);
+
+  const xRise = xFromTime(riseSample.t);
+  const xPeak = xFromTime(peakSample.t);
+  const yPeakCoord = yFromValue(yPeak);
+
+  const xSettling = xFromTime(settlingSample.t);
+
+  const yUpper = yFromValue(1.02 * yInf);
+  const yLower = yFromValue(0.98 * yInf);
+
+  /*
+    Update final value and settling band.
+  */
+  setLine("udFinalValueLine", x0, yInfCoord, x0 + width, yInfCoord);
+  setLine("udSettlingUpper", x0, yUpper, x0 + width, yUpper);
+  setLine("udSettlingLower", x0, yLower, x0 + width, yLower);
+
+  /*
+    Delay marker.
+  */
+  setLine("udDelayHoriz", x0, yDelay, xDelay, yDelay);
+  setLine("udDelayVert", xDelay, y0, xDelay, yDelay);
+
+  /*
+    Rise marker.
+  */
+  setLine("udRiseHoriz", x0, yInfCoord, xRise, yInfCoord);
+  setLine("udRiseVert", xRise, y0, xRise, yInfCoord);
+
+  /*
+    Peak time marker.
+  */
+  setLine("udPeakVert", xPeak, y0, xPeak, yPeakCoord);
+
+  /*
+    Overshoot marker:
+    vertical distance from final value to first peak.
+  */
+const xMp = xPeak;   // make Mp coincide with peak time
+setLine("udPeakLevelLine", x0, yPeakCoord, xPeak, yPeakCoord);
+setLine("udOvershootMarker", xMp, yPeakCoord, xMp, yInfCoord);
+
+
+
+/*  
+    Settling marker.
+  */
+  setLine("udSettlingVert", xSettling, y0, xSettling, yInfCoord);
+
+  /*
+    Place labels with deliberate vertical staggering to avoid overlap.
+  */
+	setText("udDelayPercentLabel", x0 + 10, yDelay - 10);
+
+setText("udDelayLabel", xDelay -56, y0 + 25);
+
+setText("udRiseLabel", xRise - 36, y0 + 68);
+setPath("udRiseArrow", `M${xRise + 8} ${y0 + 48} L${xRise} ${y0 + 8}`);
+
+setText("udPeakLabel", xPeak - 28, y0 + 25);
+setText("udSettlingLabel", xSettling - 62, y0 + 25);
+
+setText("udMpLabel", xPeak + 12, (yPeakCoord + yInfCoord) / 2);
+
+
+
+
+  /*
+    Animate the curve.
+  */
+  curve.setAttribute("points", "");
+
+  let points = [];
+  let k = 0;
+
+  function draw() {
+    const p = samples[k];
+
+    const x = xFromTime(p.t);
+    const y = yFromValue(p.y);
+
+    points.push(`${x},${y}`);
+    curve.setAttribute("points", points.join(" "));
+
+    k++;
+
+    if (k < samples.length) {
+      udAnimationId = requestAnimationFrame(draw);
+    }
+  }
+
+  draw();
+}
+
+Reveal.on("fragmentshown", event => {
+  if (event.fragment.classList.contains("ud-plot-card")) {
+    animateUnderdampedCurve();
+  }
+});
+
+Reveal.on("slidechanged", event => {
+  if (
+    event.currentSlide &&
+    event.currentSlide.classList.contains("underdamped-metrics-slide")
+  ) {
+    setTimeout(animateUnderdampedCurve, 200);
+  }
+});
+
+function setPath(id, d) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.setAttribute("d", d);
+}

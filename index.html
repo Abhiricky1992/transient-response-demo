@@ -519,15 +519,36 @@
 	<section class="so-response-slide">
   <h2>SECOND-ORDER STEP RESPONSE TYPES</h2>
 
-  <div class="response-tree">
-    <div class="tree-root">Step response</div>
+<div class="response-tree">
 
-    <div class="tree-branches">
-      <button class="response-node" onclick="showSOResponse('over')">Overdamped<br><span>ζ &gt; 1</span></button>
-      <button class="response-node" onclick="showSOResponse('critical')">Critically damped<br><span>ζ = 1</span></button>
-      <button class="response-node" onclick="showSOResponse('under')">Underdamped<br><span>0 &lt; ζ &lt; 1</span></button>
-    </div>
+  <svg class="tree-lines" viewBox="0 0 900 260" preserveAspectRatio="none">
+    <line x1="450" y1="60" x2="160" y2="145" class="tree-line"/>
+    <line x1="450" y1="60" x2="450" y2="205" class="tree-line"/>
+    <line x1="450" y1="60" x2="730" y2="145" class="tree-line"/>
+  </svg>
+
+  <div class="tree-root">
+    Step response
   </div>
+
+  <div class="tree-branches">
+    <button class="response-node" onclick="showSOResponse('over')">
+      Overdamped<br>
+      <span>&zeta; &gt; 1</span>
+    </button>
+
+    <button class="response-node" onclick="showSOResponse('critical')">
+      Critically damped<br>
+      <span>&zeta; = 1</span>
+    </button>
+
+    <button class="response-node" onclick="showSOResponse('under')">
+      Underdamped<br>
+      <span>0 &lt; &zeta; &lt; 1</span>
+    </button>
+  </div>
+
+</div>
 
   <div id="soResponsePanel" class="so-response-panel hidden">
 	
@@ -564,6 +585,264 @@
     Nise, <em>Control Systems Engineering</em>.
   </p>
 </section>
+
+<section class="underdamped-metrics-slide">
+
+  <h2>UNDERDAMPED SECOND-ORDER RESPONSE: KEY MEASURES</h2>
+
+  <div class="ud-grid">
+
+    <!-- LEFT: Plot -->
+    <div class="ud-plot-card fragment" data-fragment-index="0">
+
+      <p class="eq-title">Underdamped step response</p>
+
+      <svg viewBox="0 0 700 390" class="ud-plot">
+
+  <!-- axes -->
+  <line x1="80" y1="310" x2="645" y2="310" class="axis-line"/>
+  <line x1="80" y1="310" x2="80" y2="55" class="axis-line"/>
+
+  <text x="652" y="318" class="axis-label">t</text>
+  <text x="35" y="65" class="axis-label">y(t)</text>
+
+  <!-- final value -->
+  <line id="udFinalValueLine"
+        x1="80" y1="175" x2="645" y2="175"
+        class="steady-line"/>
+
+  <text id="udFinalValueLabel"
+        x="652" y="181"
+        class="axis-label">1</text>
+
+ <!-- delay time -->
+<line id="udDelayHoriz"
+      x1="80" y1="242" x2="145" y2="242"
+      class="delay-line fragment"
+      data-fragment-index="1"/>
+
+<line id="udDelayVert"
+      x1="145" y1="310" x2="145" y2="242"
+      class="delay-line fragment"
+      data-fragment-index="1"/>
+
+<text id="udDelayLabel"
+      x="85" y="349"
+      class="metric-label fragment"
+      data-fragment-index="1">delay time</text>
+
+<text id="udDelayPercentLabel"
+      x="90" y="235"
+      class="metric-label fragment"
+      data-fragment-index="1">50%</text>
+
+<!-- rise time -->
+<line id="udRiseHoriz"
+      x1="80" y1="175" x2="205" y2="175"
+      class="rise-line fragment"
+      data-fragment-index="2"/>
+
+<line id="udRiseVert"
+      x1="205" y1="310" x2="205" y2="175"
+      class="rise-line fragment"
+      data-fragment-index="2"/>
+
+<text id="udRiseLabel"
+      x="175" y="378"
+      class="metric-label fragment"
+      data-fragment-index="2">rise time</text>
+
+<path id="udRiseArrow"
+      d="M215 360 L205 315"
+      class="label-arrow fragment"
+      data-fragment-index="2"/>
+
+<!-- peak time -->
+<line id="udPeakVert"
+      x1="270" y1="310" x2="270" y2="100"
+      class="peak-line fragment"
+      data-fragment-index="3"/>
+
+<text id="udPeakLabel"
+      x="245" y="352"
+      class="metric-label fragment"
+      data-fragment-index="3">peak time</text>
+
+<!-- overshoot -->
+<line id="udPeakLevelLine"
+      x1="80" y1="100" x2="270" y2="100"
+      class="overshoot-ref-line fragment"
+      data-fragment-index="4"/>
+
+<line id="udOvershootMarker"
+      x1="270" y1="100" x2="270" y2="175"
+      class="overshoot-line fragment"
+      data-fragment-index="4"/>
+
+<text id="udMpLabel"
+      x="282" y="138"
+      class="metric-label fragment"
+      data-fragment-index="4">
+  M<tspan dy="5" font-size="15">p</tspan>
+</text>
+
+<!-- settling time -->
+<line id="udSettlingVert"
+      x1="525" y1="310" x2="525" y2="175"
+      class="settling-marker fragment"
+      data-fragment-index="5"/>
+
+<text id="udSettlingLabel"
+      x="470" y="355"
+      class="metric-label fragment"
+      data-fragment-index="5">settling time</text>
+
+<line id="udSettlingUpper"
+      x1="80" y1="171" x2="645" y2="171"
+      class="settling-line fragment"
+      data-fragment-index="5"/>
+
+<line id="udSettlingLower"
+      x1="80" y1="179" x2="645" y2="179"
+      class="settling-line fragment"
+      data-fragment-index="5"/>
+	  
+<text id="udSettlingBandLabel"
+      x="520" y="160"
+      class="metric-label fragment"
+      data-fragment-index="5">±2% band</text>
+	  
+  <!-- response curve -->
+  <polyline id="udResponseCurve"
+            points=""
+            class="ud-response-line"/>
+
+</svg>
+
+    </div>
+
+    <!-- MIDDLE: Delay and rise -->
+    <div class="ud-mid-column">
+
+      <div class="ud-card fragment" data-fragment-index="1">
+        <p class="metric-title">Delay time</p>
+        \[
+        y(t_d)=0.5\,y_{\infty}
+        \]
+        <p class="metric-note">
+          Time required to reach 50% of the final value.
+        </p>
+      </div>
+
+      <div class="ud-card fragment" data-fragment-index="2">
+        <p class="metric-title">Rise time</p>
+        \[
+        y(t_r)=y_{\infty}
+        \]
+        <p class="metric-note">
+          Time to first reach the final value.
+        </p>
+      </div>
+
+      <div class="ud-card final-card fragment" data-fragment-index="2">
+        <p class="metric-title">Final value</p>
+        \[
+        y_{\infty}=\lim_{t\to\infty}y(t)
+        \]
+        <p class="metric-note">
+          For a unit step response,  <span class="note-math">\(y_{\infty}\)</span> = 1.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: Peak, overshoot, settling -->
+    <div class="ud-right-column">
+
+      <div class="ud-card fragment" data-fragment-index="3">
+        <p class="metric-title">Peak time</p>
+        \[
+        t_p=\frac{\pi}{\omega_d}
+        \]
+        <p class="metric-note">
+          Time at which the first peak occurs.
+        </p>
+      </div>
+
+      <div class="ud-card fragment" data-fragment-index="4">
+        <p class="metric-title">Maximum overshoot</p>
+        \[
+        M_p=e^{-\zeta\pi/\sqrt{1-\zeta^2}}\times100\%
+        \]
+        <p class="metric-note">
+          First peak above  <span class="note-math">\(y_{\infty}\)</span>.
+        </p>
+      </div>
+
+      <div class="ud-card fragment" data-fragment-index="5">
+        <p class="metric-title">Settling time</p>
+        \[
+        t_s\approx\frac{4}{\zeta\omega_n}
+        \]
+        <p class="metric-note">
+          Approximation using the 2% criterion.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <p class="citation">
+    Underdamped transient response measures adapted from:
+    Ogata, <em>Modern Control Engineering</em>;
+    Nise, <em>Control Systems Engineering</em>.
+  </p>
+
+</section>
+
+	<section class="takeaway-slide">
+
+  <h2>KEY TAKEAWAYS</h2>
+
+  <div class="takeaway-grid">
+
+<div class="takeaway-card fragment" data-fragment-index="0">
+  <p class="takeaway-title">Complex dynamics can be simplified</p>
+  <p>
+    Flight vehicle responses to inputs and disturbances can often be captured by first-order or second-order models.
+  </p>
+</div>
+
+    <div class="takeaway-card fragment" data-fragment-index="1">
+      <p class="takeaway-title">First-order systems are non-oscillatory</p>
+      <p>
+        The time constant \( \tau \) controls the speed of response.
+      </p>
+    </div>
+
+    <div class="takeaway-card fragment" data-fragment-index="2">
+      <p class="takeaway-title">Second-order systems can oscillate</p>
+      <p>
+        \( \zeta \) controls damping and overshoot; \( \omega_n \) controls natural response speed.
+      </p>
+    </div>
+
+    <div class="takeaway-card fragment" data-fragment-index="3">
+      <p class="takeaway-title">Performance measures quantify behavior</p>
+      <p>
+        Rise time, peak time, settling time, and overshoot help compare designs.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="closing-line fragment" data-fragment-index="4">
+    Transient response analysis tells us not only where the aircraft goes, but how it gets there.
+  </div>
+
+</section>
+
 
     </div>
   </div>

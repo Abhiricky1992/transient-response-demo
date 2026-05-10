@@ -825,10 +825,36 @@
 }
 
 .response-tree {
+  position: relative;
   text-align: center;
+  height: 275px;
+  margin-top: 10px;
+}
+
+.tree-lines {
+  position: absolute;
+  left: 50%;
+  top: 15px;
+
+  width: 78%;
+  height: 235px;
+
+  transform: translateX(-50%);
+
+  pointer-events: none;
+  z-index: 0;
+}
+
+.tree-line {
+  stroke: #9b2c91;
+  stroke-width: 3;
+  stroke-dasharray: 8 7;
 }
 
 .tree-root {
+  position: relative;
+  z-index: 2;
+
   display: inline-block;
   background: rgba(255,255,255,0.97);
   border-left: 7px solid #245f9e;
@@ -840,7 +866,11 @@
 }
 
 .tree-branches {
-  margin-top: 45px;
+  position: relative;
+  z-index: 3;
+
+  margin-top: 70px;
+
   display: flex;
   justify-content: center;
   gap: 40px;
@@ -877,6 +907,7 @@
 
   box-shadow: 0 7px 24px rgba(0,0,0,0.14);
   text-align: center;
+   z-index: 20;
 }
 
 .hidden {
@@ -953,5 +984,252 @@
   color: #666;
 }
 
+.underdamped-metrics-slide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 34px 42px 48px 42px;
+  box-sizing: border-box;
+}
 
+.underdamped-metrics-slide h2 {
+  color: #245f9e;
+  font-size: 0.90em;
+  text-align: center;
+  margin: 0 0 24px 0;
+}
 
+/* Main layout */
+.ud-grid {
+  display: grid;
+  grid-template-columns: 47% 23% 26%;
+  column-gap: 2%;
+  align-items: start;
+}
+
+/* Plot panel */
+.ud-plot-card {
+  background: rgba(255,255,255,0.97);
+  border-left: 7px solid #245f9e;
+  box-shadow: 0 7px 22px rgba(0,0,0,0.10);
+  box-sizing: border-box;
+  text-align: center;
+  padding: 16px 20px;
+  min-height: 430px;
+  overflow: hidden;
+}
+
+.ud-plot {
+  width: 116%;
+  height: 420px;
+  margin-left: -8%;
+  margin-top: -42px;
+}
+
+/* Formula columns */
+.ud-mid-column,
+.ud-right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Formula cards */
+.ud-card {
+  background: rgba(255,255,255,0.97);
+  border-left: 7px solid #3f7d44;
+  box-shadow: 0 7px 22px rgba(0,0,0,0.10);
+  box-sizing: border-box;
+  text-align: center;
+  padding: 13px 14px;
+  min-height: 122px;
+}
+
+.ud-right-column .ud-card {
+  min-height: 122px;
+}
+
+.ud-card.final-card {
+  min-height: 110px;
+}
+
+/* Titles */
+.underdamped-metrics-slide .eq-title,
+.underdamped-metrics-slide .metric-title {
+  color: #245f9e;
+  font-weight: 700;
+  font-size: 0.38em;
+  margin: 0 0 8px 0;
+}
+
+/* Notes */
+.underdamped-metrics-slide .metric-note {
+  font-size: 0.225em;
+  color: #555;
+  line-height: 1.25;
+  margin-top: 7px;
+}
+
+/* Math size: prevents equation overflow */
+.underdamped-metrics-slide mjx-container {
+  font-size: 40% !important;
+}
+
+.ud-right-column mjx-container {
+  font-size: 36% !important;
+}
+
+/* SVG styles */
+.axis-line {
+  stroke: #333;
+  stroke-width: 2.5;
+}
+
+.axis-label,
+.metric-label {
+  fill: #333;
+  font-size: 20px;
+}
+
+.steady-line {
+  stroke: #777;
+  stroke-width: 2.3;
+  stroke-dasharray: 6 6;
+}
+
+.delay-line {
+  stroke: #6b7280;
+  stroke-width: 2.5;
+  stroke-dasharray: 6 6;
+}
+
+.rise-line {
+  stroke: #d97706;
+  stroke-width: 2.5;
+  stroke-dasharray: 6 6;
+}
+
+.peak-line {
+  stroke: #245f9e;
+  stroke-width: 2.5;
+  stroke-dasharray: 6 6;
+}
+
+.overshoot-ref-line {
+  stroke: #9b2c91;
+  stroke-width: 2.5;
+  stroke-dasharray: 6 6;
+}
+
+.overshoot-line {
+  stroke: #9b2c91;
+  stroke-width: 3.0;
+}
+
+.settling-line,
+.settling-marker {
+  stroke: #3f7d44;
+  stroke-width: 2.5;
+  stroke-dasharray: 6 6;
+}
+
+.ud-response-line {
+  fill: none;
+  stroke: #9b2c91;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.overshoot-ref-line {
+  stroke: #9b2c91;
+  stroke-width: 2.5;
+  stroke-dasharray: 6 6;
+}
+
+.label-arrow {
+  fill: none;
+  stroke: #333;
+  stroke-width: 2;
+}
+
+.underdamped-metrics-slide .metric-note {
+  font-size: 0.25em;
+  color: #555;
+  line-height: 1.25;
+  margin-top: 8px;
+}
+
+.underdamped-metrics-slide .metric-note .note-math mjx-container {
+  font-size: 1.22em !important;
+}
+
+/* Citation */
+.underdamped-metrics-slide .citation {
+  position: absolute;
+  left: 45px;
+  right: 45px;
+  bottom: 4px;
+  text-align: center;
+  font-size: 0.30em;
+  color: #666;
+}
+
+.takeaway-slide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 45px 70px;
+  box-sizing: border-box;
+}
+
+.takeaway-slide h2 {
+  color: #245f9e;
+  font-size: 1.1em;
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+.takeaway-grid {
+  display: grid;
+  grid-template-columns: 48% 48%;
+  column-gap: 4%;
+  row-gap: 32px;
+}
+
+.takeaway-card {
+  background: rgba(255,255,255,0.97);
+  border-left: 7px solid #245f9e;
+  box-shadow: 0 7px 22px rgba(0,0,0,0.10);
+  padding: 24px 28px;
+  box-sizing: border-box;
+  min-height: 150px;
+}
+
+.takeaway-title {
+  color: #245f9e;
+  font-weight: 700;
+  font-size: 0.48em;
+  margin-bottom: 12px;
+}
+
+.takeaway-card p {
+  font-size: 0.34em;
+  color: #444;
+  line-height: 1.35;
+}
+
+.takeaway-slide mjx-container {
+  font-size: 90% !important;
+}
+
+.closing-line {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 8%;
+  text-align: center;
+  font-size: 0.42em;
+  color: #9b2c91;
+  font-weight: 600;
+}
