@@ -708,6 +708,11 @@
   line-height: 1.25;
 }
 
+
+.metric-note .note-math mjx-container {
+  font-size: 1.22em !important;
+}
+
 .metrics-slide mjx-container {
   font-size: 58% !important;
 }
