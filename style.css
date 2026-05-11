@@ -8,7 +8,7 @@
 
 .main-title {
   font-size: 3.5em;
-  color: #2c5d8a;
+  color: #2c5d8a !important;
   font-weight: 700;
   margin-bottom: 20px;
 }
@@ -17,6 +17,13 @@
   font-size: 1.8em;
   color: #9b2c91;
   font-weight: 500;
+}
+
+.reveal .title-slide .author-name {
+  font-size: 0.7em;
+  color: #444;
+  margin-top: 28px;
+  font-weight: 400;
 }
 
 .steady-pitch-slide {
